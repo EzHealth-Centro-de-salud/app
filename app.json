@@ -25,10 +25,16 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.ezhealth.app"
     },
     "web": {
       "favicon": "./assets/images/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "83589e8d-03f7-4dfd-9f83-e1d9268dcfe5"
+      }
     }
   }
 }
