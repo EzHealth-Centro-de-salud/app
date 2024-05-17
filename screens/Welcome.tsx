@@ -23,7 +23,12 @@ const WelcomeScreen: React.FC<Props> = ({ navigation: { navigate } }) => {
   return (
     <GradientWrapper>
       <SafeAreaView>
-        <View>
+        <View
+          style={{
+            marginVertical: Spacing * 1,
+            padding: Spacing * 2,
+          }}
+        >
           <ImageBackground
             style={{
               height: height / 2.5,
@@ -49,7 +54,7 @@ const WelcomeScreen: React.FC<Props> = ({ navigation: { navigate } }) => {
 
             <Text
               style={{
-                fontSize: FontSize.small,
+                fontSize: FontSize.medium,
                 color: Colors.text,
                 fontFamily: Font["poppins-regular"],
                 textAlign: "center",
@@ -66,6 +71,7 @@ const WelcomeScreen: React.FC<Props> = ({ navigation: { navigate } }) => {
             }}
           >
             <TouchableOpacity
+              onPress={() => navigate("Login")}
               style={{
                 padding: Spacing * 2,
                 backgroundColor: Colors.primary,
@@ -88,23 +94,7 @@ const WelcomeScreen: React.FC<Props> = ({ navigation: { navigate } }) => {
                   textAlign: "center",
                 }}
               >
-                Iniciar Sesion
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={{
-                padding: Spacing,
-              }}
-            >
-              <Text
-                style={{
-                  fontFamily: Font["poppins-bold"],
-                  color: Colors.text,
-                  textAlign: "center",
-                  fontSize: FontSize.large,
-                }}
-              >
-                Registrarse
+                Ingresar
               </Text>
             </TouchableOpacity>
           </View>

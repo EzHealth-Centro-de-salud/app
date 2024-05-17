@@ -4,6 +4,7 @@ import * as React from "react";
 import { RootStackParamList } from "../types";
 import Colors from "../constants/Colors";
 import Welcome from "../screens/Welcome";
+import Login from "../screens/Auth/Login";
 
 const theme = {
   ...DefaultTheme,
@@ -31,6 +32,7 @@ function RootNavigator() {
       }}
     >
       <Stack.Screen name="Welcome" component={Welcome} />
+      <Stack.Screen name="Login" component={Login} />
     </Stack.Navigator>
   );
 }
