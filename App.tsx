@@ -1,15 +1,15 @@
-import React, { useEffect } from 'react';
-import { useFonts } from 'expo-font';
-import { StatusBar } from 'expo-status-bar';
-import fonts from './config/fonts';
-import Navigation from './navigation';
-import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
-import Toast from 'react-native-toast-message';
-import CustomToast from './components/CustomToast';
+import React, { useEffect } from "react";
+import { useFonts } from "expo-font";
+import { StatusBar } from "expo-status-bar";
+import fonts from "./config/fonts";
+import Navigation from "./navigation";
+import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
+import Toast from "react-native-toast-message";
+import CustomToast from "./components/CustomToast";
 
 const client = new ApolloClient({
-  uri: 'http://10.162.163.46:3000/graphql',
-  cache: new InMemoryCache()
+  uri: process.env.REACT_APP_BACKEND_URL,
+  cache: new InMemoryCache(),
 });
 
 export default function App() {
@@ -22,18 +22,10 @@ export default function App() {
       <Toast
         config={{
           success: ({ text1, text2 }) => (
-            <CustomToast
-              type="success"
-              text1={text1}
-              text2={text2}
-            />
+            <CustomToast type="success" text1={text1} text2={text2} />
           ),
           error: ({ text1, text2 }) => (
-            <CustomToast
-              type="error"
-              text1={text1}
-              text2={text2}
-            />
+            <CustomToast type="error" text1={text1} text2={text2} />
           ),
         }}
       />

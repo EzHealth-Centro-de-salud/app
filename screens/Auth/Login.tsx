@@ -20,6 +20,7 @@ import Toast from "react-native-toast-message";
 import useButtonTimeout from "../../hooks/useButtonTimeout";
 import { Icon } from "@rneui/themed";
 import GradientWrapper from "../../components/GradientWrapper";
+import { LOGIN_PATIENT, LOGIN_PERSONNEL } from "../../graphql/mutations";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Login">;
 
@@ -27,6 +28,111 @@ const LoginScreen: React.FC<Props> = ({ navigation: { navigate } }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [accountType, setAccountType] = useState("patient");
+  const [rut, setRut] = useState("");
+  const [password, setPassword] = useState("");
+  const { userId, setUserId } = useUserStore();
+  const { accessToken, setAccessToken } = useUserStore();
+  const { firstName, setFirstName } = useUserStore();
+  const { role, setRole } = useUserStore();
+  const { speciality, setSpeciality } = useUserStore();
+  const [loginPatient] = useMutation(LOGIN_PATIENT);
+  const [loginPersonnel] = useMutation(LOGIN_PERSONNEL);
+
+  useButtonTimeout(
+    () => {
+      setIsSubmitting(false);
+    },
+    1000,
+    isSubmitting
+  );
+  // -----------------------------------Methods-----------------------------------
+  // -----------------------------------Login Method-----------------------------------
+  const handleLogin = async (rut: string, password: string) => {
+    setIsSubmitting(true);
+    if (rut === "" || password === "") {
+      Toast.show({
+        type: "error",
+        text1: "Debe llenar todos los campos",
+        text2: "Intente nuevamente",
+        position: "bottom",
+        visibilityTime: 1000,
+        autoHide: true,
+      });
+      setIsSubmitting(false);
+    } else {
+      try {
+        if (accountType === "patient") {
+          // -----------------------------------Login Patient-----------------------------------
+          setIsLoading(true);
+          const { data } = await loginPatient({
+            variables: {
+              LoginInput: {
+                rut,
+                password,
+              },
+            },
+          });
+          setIsLoading(false);
+          if (data?.loginPatient) {
+            console.log(data.loginPatient);
+            setUserId(data.loginPatient.id);
+            setFirstName(data.loginPatient.first_name);
+            setAccessToken(data.loginPatient.accessToken);
+            Toast.show({
+              type: "success",
+              text1: "Ingreso exitoso",
+              text2: "Redirigiendo al dashboard",
+              position: "bottom",
+              visibilityTime: 1250, // Duration in milliseconds
+              autoHide: true,
+            });
+            //navigate("Dashboard_Pat");
+          }
+        } else {
+          // -----------------------------------Login Personnel-----------------------------------
+          setIsLoading(true);
+          const { data } = await loginPersonnel({
+            variables: {
+              LoginInput: {
+                rut,
+                password,
+              },
+            },
+          });
+          setIsLoading(false);
+          if (data?.loginPersonnel) {
+            console.log(data.loginPersonnel);
+            setUserId(data.loginPersonnel.id);
+            setFirstName(data.loginPersonnel.first_name);
+            setRole(data.loginPersonnel.role);
+            setSpeciality(data.loginPersonnel.speciality);
+            setAccessToken(data.loginPersonnel.accessToken);
+            Toast.show({
+              type: "success",
+              text1: "Ingreso exitoso",
+              text2: "Redirigiendo al dashboard",
+              position: "bottom",
+              visibilityTime: 1250, // Duration in milliseconds
+              autoHide: true,
+            });
+            //navigate("Dashboard_Per");
+          }
+        }
+      } catch (e) {
+        console.log(e);
+        setIsSubmitting(false);
+        setIsLoading(false);
+        Toast.show({
+          type: "error",
+          text1: e.message,
+          text2: "Intente nuevamente",
+          position: "bottom",
+          visibilityTime: 1000,
+          autoHide: true,
+        });
+      }
+    }
+  };
 
   return (
     <GradientWrapper>
@@ -66,11 +172,11 @@ const LoginScreen: React.FC<Props> = ({ navigation: { navigate } }) => {
                 color: Colors.primary,
                 fontFamily: Font["poppins-bold"],
                 marginTop: Spacing * 5,
-                marginBottom: Spacing * 2,
+                marginBottom: Spacing * 1,
                 textAlign: "center",
               }}
             >
-              Elegir tipo de cuenta
+              Elige como quieres ingresar
             </Text>
           </View>
           {/* -----------------------------------Account Type Buttons----------------------------------- */}
@@ -109,17 +215,19 @@ const LoginScreen: React.FC<Props> = ({ navigation: { navigate } }) => {
                 Paciente
               </Text>
             </TouchableOpacity>
-            {/* -----------------------------------Doctor Button----------------------------------- */}
+            {/* -----------------------------------Personnel Button----------------------------------- */}
             <TouchableOpacity
               style={{
                 flex: 1,
                 padding: Spacing * 1,
                 borderRadius: Spacing,
                 backgroundColor:
-                  accountType === "doctor" ? Colors.primary : Colors.disabled,
+                  accountType === "personnel"
+                    ? Colors.primary
+                    : Colors.disabled,
                 margin: Spacing,
               }}
-              onPress={() => setAccountType("doctor")} // Cambia el tipo de cuenta a 'doctor' cuando se presiona el botón
+              onPress={() => setAccountType("personnel")}
             >
               <Icon
                 size={60}
@@ -135,10 +243,11 @@ const LoginScreen: React.FC<Props> = ({ navigation: { navigate } }) => {
                   fontSize: FontSize.large,
                 }}
               >
-                Médico
+                Personal
               </Text>
             </TouchableOpacity>
           </View>
+          {/* -----------------------------------Login Form----------------------------------- */}
           <View
             style={{
               marginTop: Spacing * 2,
@@ -146,13 +255,21 @@ const LoginScreen: React.FC<Props> = ({ navigation: { navigate } }) => {
             }}
           >
             <AppTextInput
-              placeholder="Correo"
-              keyboardType="email-address"
-              autoComplete="email"
+              placeholder="RUT"
+              keyboardType="default"
+              value={rut}
+              onChangeText={setRut}
             />
-            <AppTextInput placeholder="Contraseña" secureTextEntry />
+            <AppTextInput
+              placeholder="Contraseña"
+              value={password}
+              onChangeText={setPassword}
+              secureTextEntry
+            />
           </View>
+          {/* -----------------------------------Login Button----------------------------------- */}
           <TouchableOpacity
+            onPress={() => handleLogin(rut, password)}
             disabled={isLoading || isSubmitting}
             style={{
               padding: Spacing * 2,
@@ -183,18 +300,55 @@ const LoginScreen: React.FC<Props> = ({ navigation: { navigate } }) => {
               </Text>
             )}
           </TouchableOpacity>
-          <TouchableOpacity disabled={isLoading || isSubmitting}>
+          {/* -----------------------------------Forgot Password Button----------------------------------- */}
+          <TouchableOpacity
+            disabled={isLoading || isSubmitting}
+            style={{
+              marginVertical: Spacing,
+            }}
+          >
             <Text
               style={{
                 fontFamily: Font["poppins-semiBold"],
-                fontSize: FontSize.small,
+                fontSize: FontSize.medium,
                 color: Colors.primary,
-                alignSelf: "flex-end",
+                textAlign: "right",
               }}
             >
               Olvidé mi contraseña
             </Text>
           </TouchableOpacity>
+          {/* -----------------------------------Register Button----------------------------------- */}
+          {accountType === "patient" && (
+            <Text
+              style={{
+                fontFamily: Font["poppins-semiBold"],
+                fontSize: FontSize.medium,
+                color: Colors.primary,
+                marginTop: Spacing * 3,
+                textAlign: "center",
+              }}
+            >
+              ¿No tienes una cuenta?
+            </Text>
+          )}
+          {accountType === "patient" && (
+            <TouchableOpacity
+              disabled={isLoading || isSubmitting}
+              style={{ alignItems: "center" }}
+              onPress={() => {}}
+            >
+              <Text
+                style={{
+                  fontFamily: Font["poppins-semiBold"],
+                  fontSize: FontSize.medium,
+                  color: "blue",
+                }}
+              >
+                Regístrate
+              </Text>
+            </TouchableOpacity>
+          )}
         </View>
       </SafeAreaView>
     </GradientWrapper>

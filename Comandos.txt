@@ -1,1 +1,2 @@
+Start: npm start
 Build Android: eas build -p android --profile preview
