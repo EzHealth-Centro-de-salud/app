@@ -19,7 +19,7 @@ import GradientWrapper from "../components/GradientWrapper";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Welcome">;
 
-const WelcomeScreen: React.FC<Props> = ({ navigation: { navigate } }) => {
+const Welcome: React.FC<Props> = ({ navigation: { navigate } }) => {
   return (
     <GradientWrapper>
       <SafeAreaView>
@@ -104,6 +104,6 @@ const WelcomeScreen: React.FC<Props> = ({ navigation: { navigate } }) => {
   );
 };
 
-export default WelcomeScreen;
+export default Welcome;
 
 const styles = StyleSheet.create({});

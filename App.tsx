@@ -3,12 +3,18 @@ import { useFonts } from "expo-font";
 import { StatusBar } from "expo-status-bar";
 import fonts from "./config/fonts";
 import Navigation from "./navigation";
-import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
+import {
+  ApolloClient,
+  ApolloProvider,
+  InMemoryCache,
+  createHttpLink,
+} from "@apollo/client";
 import Toast from "react-native-toast-message";
 import CustomToast from "./components/CustomToast";
+import { setContext } from "@apollo/client/link/context";
 
 const client = new ApolloClient({
-  uri: process.env.REACT_APP_BACKEND_URL,
+  uri: process.env.EXPO_PUBLIC_BACKEND_URL,
   cache: new InMemoryCache(),
 });
 

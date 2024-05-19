@@ -24,7 +24,7 @@ import { LOGIN_PATIENT, LOGIN_PERSONNEL } from "../../graphql/mutations";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Login">;
 
-const LoginScreen: React.FC<Props> = ({ navigation: { navigate } }) => {
+const Login: React.FC<Props> = ({ navigation: { navigate } }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [accountType, setAccountType] = useState("patient");
@@ -66,7 +66,7 @@ const LoginScreen: React.FC<Props> = ({ navigation: { navigate } }) => {
           setIsLoading(true);
           const { data } = await loginPatient({
             variables: {
-              LoginInput: {
+              input: {
                 rut,
                 password,
               },
@@ -93,7 +93,7 @@ const LoginScreen: React.FC<Props> = ({ navigation: { navigate } }) => {
           setIsLoading(true);
           const { data } = await loginPersonnel({
             variables: {
-              LoginInput: {
+              input: {
                 rut,
                 password,
               },
@@ -301,23 +301,46 @@ const LoginScreen: React.FC<Props> = ({ navigation: { navigate } }) => {
             )}
           </TouchableOpacity>
           {/* -----------------------------------Forgot Password Button----------------------------------- */}
-          <TouchableOpacity
-            disabled={isLoading || isSubmitting}
-            style={{
-              marginVertical: Spacing,
-            }}
-          >
-            <Text
+          {accountType === "patient" && (
+            <TouchableOpacity
+              disabled={isLoading || isSubmitting}
               style={{
-                fontFamily: Font["poppins-semiBold"],
-                fontSize: FontSize.medium,
-                color: Colors.primary,
-                textAlign: "right",
+                marginVertical: Spacing,
               }}
+              onPress={() => navigate("RecoveryPass_Pat")}
             >
-              Olvidé mi contraseña
-            </Text>
-          </TouchableOpacity>
+              <Text
+                style={{
+                  fontFamily: Font["poppins-semiBold"],
+                  fontSize: FontSize.medium,
+                  color: Colors.primary,
+                  textAlign: "right",
+                }}
+              >
+                Olvidé mi contraseña
+              </Text>
+            </TouchableOpacity>
+          )}
+          {accountType === "personnel" && (
+            <TouchableOpacity
+              disabled={isLoading || isSubmitting}
+              style={{
+                marginVertical: Spacing,
+              }}
+              onPress={() => navigate("RecoveryPass_Per")}
+            >
+              <Text
+                style={{
+                  fontFamily: Font["poppins-semiBold"],
+                  fontSize: FontSize.medium,
+                  color: Colors.primary,
+                  textAlign: "right",
+                }}
+              >
+                Olvidé mi contraseña
+              </Text>
+            </TouchableOpacity>
+          )}
           {/* -----------------------------------Register Button----------------------------------- */}
           {accountType === "patient" && (
             <Text
@@ -355,6 +378,6 @@ const LoginScreen: React.FC<Props> = ({ navigation: { navigate } }) => {
   );
 };
 
-export default LoginScreen;
+export default Login;
 
 const styles = StyleSheet.create({});

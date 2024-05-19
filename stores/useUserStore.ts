@@ -8,11 +8,13 @@ export type UseUserStoreT = {
   firstName?: string;
   role?: string;
   speciality?: string;
+  rut?: string;
   setAccessToken: (accessToken: string) => void;
   setUserId: (userId: number) => void;
   setFirstName: (firstName: string) => void;
   setRole: (role: string) => void;
   setSpeciality: (speciality: string) => void;
+  setRut: (rut: string) => void;
 };
 
 export const useUserStore = create<UseUserStoreT>()(
@@ -24,11 +26,13 @@ export const useUserStore = create<UseUserStoreT>()(
         firstName: undefined,
         role: undefined,
         speciality: undefined,
+        rut: undefined,
         setAccessToken: (accessToken: string) => set({ accessToken }),
         setUserId: (userId: number) => set({ userId }),
         setFirstName: (firstName: string) => set({ firstName }),
         setRole: (role: string) => set({ role }),
         setSpeciality: (speciality: string) => set({ speciality }),
+        setRut: (rut: string) => set({ rut }),
       }),
       {
         name: "user-storage",
