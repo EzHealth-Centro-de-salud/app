@@ -82,8 +82,8 @@ const Login: React.FC<Props> = ({ navigation: { navigate } }) => {
               },
             },
           });
-          setIsLoading(false);
           if (data?.loginPatient) {
+            setIsLoading(false);
             console.log(data.loginPatient);
             setUserId(data.loginPatient.id);
             setFirstName(data.loginPatient.first_name);
@@ -109,8 +109,8 @@ const Login: React.FC<Props> = ({ navigation: { navigate } }) => {
               },
             },
           });
-          setIsLoading(false);
           if (data?.loginPersonnel) {
+            setIsLoading(false);
             console.log(data.loginPersonnel);
             setUserId(data.loginPersonnel.id);
             setFirstName(data.loginPersonnel.first_name);
