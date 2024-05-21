@@ -9,6 +9,8 @@ declare global {
 export type RootStackParamList = {
   Welcome: undefined;
   Login: undefined;
+  Register_Pat1: undefined;
+  Register_Pat2: undefined;
   RecoveryPass_Pat: undefined;
   ValidateCode_Pat: undefined;
   ChangePass_Pat: undefined;

@@ -5,6 +5,8 @@ import { RootStackParamList } from "../types";
 import Colors from "../constants/Colors";
 import Welcome from "../screens/Welcome";
 import Login from "../screens/Auth/Login";
+import Register_Pat1 from "../screens/Auth/Patient/Register_Pat1";
+import Register_Pat2 from "../screens/Auth/Patient/Register_Pat2";
 import RecoveryPass_Pat from "../screens/Auth/Patient/RecoveryPass_Pat";
 import ValidateCode_Pat from "../screens/Auth/Patient/ValidateCode_Pat";
 import ChangePass_Pat from "../screens/Auth/Patient/ChangePass_Pat";
@@ -39,6 +41,8 @@ function RootNavigator() {
     >
       <Stack.Screen name="Welcome" component={Welcome} />
       <Stack.Screen name="Login" component={Login} />
+      <Stack.Screen name="Register_Pat1" component={Register_Pat1} />
+      <Stack.Screen name="Register_Pat2" component={Register_Pat2} />
       <Stack.Screen name="RecoveryPass_Pat" component={RecoveryPass_Pat} />
       <Stack.Screen name="ValidateCode_Pat" component={ValidateCode_Pat} />
       <Stack.Screen name="ChangePass_Pat" component={ChangePass_Pat} />

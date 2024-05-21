@@ -21,6 +21,7 @@ import useButtonTimeout from "../../hooks/useButtonTimeout";
 import { Icon } from "@rneui/themed";
 import GradientWrapper from "../../components/GradientWrapper";
 import { LOGIN_PATIENT, LOGIN_PERSONNEL } from "../../graphql/mutations";
+import { useFocusEffect } from "@react-navigation/native";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Login">;
 
@@ -30,11 +31,12 @@ const Login: React.FC<Props> = ({ navigation: { navigate } }) => {
   const [accountType, setAccountType] = useState("patient");
   const [rut, setRut] = useState("");
   const [password, setPassword] = useState("");
-  const { userId, setUserId } = useUserStore();
-  const { accessToken, setAccessToken } = useUserStore();
-  const { firstName, setFirstName } = useUserStore();
-  const { role, setRole } = useUserStore();
-  const { speciality, setSpeciality } = useUserStore();
+  const { setUserId } = useUserStore();
+  const { setAccessToken } = useUserStore();
+  const { setFirstName } = useUserStore();
+  const { setRole } = useUserStore();
+  const { setSpeciality } = useUserStore();
+  const { removeRegData } = useUserStore();
   const [loginPatient] = useMutation(LOGIN_PATIENT);
   const [loginPersonnel] = useMutation(LOGIN_PERSONNEL);
 
@@ -45,6 +47,14 @@ const Login: React.FC<Props> = ({ navigation: { navigate } }) => {
     1000,
     isSubmitting
   );
+
+  useFocusEffect(
+    React.useCallback(() => {
+      removeRegData();
+      console.log("Removed registration data");
+    }, [])
+  );
+
   // -----------------------------------Methods-----------------------------------
   // -----------------------------------Login Method-----------------------------------
   const handleLogin = async (rut: string, password: string) => {
@@ -250,8 +260,7 @@ const Login: React.FC<Props> = ({ navigation: { navigate } }) => {
           {/* -----------------------------------Login Form----------------------------------- */}
           <View
             style={{
-              marginTop: Spacing * 2,
-              marginBottom: Spacing * 2,
+              marginVertical: Spacing * 2,
             }}
           >
             <AppTextInput
@@ -359,7 +368,7 @@ const Login: React.FC<Props> = ({ navigation: { navigate } }) => {
             <TouchableOpacity
               disabled={isLoading || isSubmitting}
               style={{ alignItems: "center" }}
-              onPress={() => {}}
+              onPress={() => navigate("Register_Pat1")}
             >
               <Text
                 style={{

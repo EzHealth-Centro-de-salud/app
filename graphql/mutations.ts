@@ -22,6 +22,15 @@ export const LOGIN_PERSONNEL = gql`
   }
 `;
 
+export const CREATE_PATIENT = gql`
+  mutation CreatePatient($input: CreatePatientInput!) {
+    createPatient(input: $input) {
+      success
+      message
+    }
+  }
+`;
+
 export const RECOVERY_PATIENT = gql`
   mutation RecoveryPatient($input: RecoveryUserInput!) {
     recoveryPatient(input: $input) {
