@@ -14,7 +14,7 @@ import CustomToast from "./components/CustomToast";
 import { setContext } from "@apollo/client/link/context";
 
 const client = new ApolloClient({
-  uri: process.env.EXPO_PUBLIC_BACKEND_URL,
+  uri: process.env.EXPO_PUBLIC_CLOUD_BACKEND_URL,
   cache: new InMemoryCache(),
 });
 
