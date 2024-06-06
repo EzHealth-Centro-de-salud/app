@@ -51,7 +51,6 @@ const Login: React.FC<Props> = ({ navigation: { navigate } }) => {
   useFocusEffect(
     React.useCallback(() => {
       removeRegData();
-      console.log("Removed registration data");
     }, [])
   );
 
@@ -84,7 +83,6 @@ const Login: React.FC<Props> = ({ navigation: { navigate } }) => {
           });
           if (data?.loginPatient) {
             setIsLoading(false);
-            console.log(data.loginPatient);
             setUserId(data.loginPatient.id);
             setFirstName(data.loginPatient.first_name);
             setAccessToken(data.loginPatient.accessToken);
@@ -96,7 +94,7 @@ const Login: React.FC<Props> = ({ navigation: { navigate } }) => {
               visibilityTime: 1250, // Duration in milliseconds
               autoHide: true,
             });
-            //navigate("Dashboard_Pat");
+            navigate("Dashboard_Pat");
           }
         } else {
           // -----------------------------------Login Personnel-----------------------------------
@@ -357,7 +355,7 @@ const Login: React.FC<Props> = ({ navigation: { navigate } }) => {
                 fontFamily: Font["poppins-semiBold"],
                 fontSize: FontSize.medium,
                 color: Colors.primary,
-                marginTop: Spacing * 3,
+                marginTop: Spacing * 2,
                 textAlign: "center",
               }}
             >

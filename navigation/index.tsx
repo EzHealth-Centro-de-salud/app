@@ -13,6 +13,11 @@ import ChangePass_Pat from "../screens/Auth/Patient/ChangePass_Pat";
 import RecoveryPass_Per from "../screens/Auth/Personnel/RecoveryPass_Per";
 import ValidateCode_Per from "../screens/Auth/Personnel/ValidateCode_Per";
 import ChangePass_Per from "../screens/Auth/Personnel/ChangePass_Per";
+import Dashboard_Pat from "../screens/Patient/Dashboard_Pat";
+import My_Appointments_Pat from "../screens/Patient/Appointment/View_Appointment/My_Appointments_Pat";
+import Create_Appointment_1 from "../screens/Patient/Appointment/Create_Appointment/Create_Appointment_1";
+import Create_Appointment_2 from "../screens/Patient/Appointment/Create_Appointment/Create_Appointment_2";
+import Confirm_Details from "../screens/Patient/Appointment/Create_Appointment/Confirm_Details";
 
 const theme = {
   ...DefaultTheme,
@@ -49,6 +54,20 @@ function RootNavigator() {
       <Stack.Screen name="RecoveryPass_Per" component={RecoveryPass_Per} />
       <Stack.Screen name="ValidateCode_Per" component={ValidateCode_Per} />
       <Stack.Screen name="ChangePass_Per" component={ChangePass_Per} />
+      <Stack.Screen name="Dashboard_Pat" component={Dashboard_Pat} />
+      <Stack.Screen
+        name="My_Appointments_Pat"
+        component={My_Appointments_Pat}
+      />
+      <Stack.Screen
+        name="Create_Appointment_1"
+        component={Create_Appointment_1}
+      />
+      <Stack.Screen
+        name="Create_Appointment_2"
+        component={Create_Appointment_2}
+      />
+      <Stack.Screen name="Confirm_Details" component={Confirm_Details} />
     </Stack.Navigator>
   );
 }

@@ -1,6 +1,6 @@
-import React, { ReactNode, useEffect, useRef } from 'react';
-import { LinearGradient } from 'expo-linear-gradient';
-import { StyleSheet, Animated, Easing } from 'react-native';
+import React, { ReactNode, useEffect, useRef } from "react";
+import { LinearGradient } from "expo-linear-gradient";
+import { StyleSheet, Animated, Easing } from "react-native";
 
 interface GradientWrapperProps {
   children: ReactNode;
@@ -20,7 +20,8 @@ const GradientWrapper: React.FC<GradientWrapperProps> = ({ children }) => {
     ).start();
   }, [animatedValue]);
 
-  const linearGradientColors = ['#0093E9', '#80D0C7', '#97eefd'];
+  const linearGradientColors = ["#ffffff", "#ffffff", "#ffffff"];
+  // const linearGradientColors = ["#0093E9", "#80D0C7", "#97eefd"];
 
   const interpolatedColors = animatedValue.interpolate({
     inputRange: [0, 1],
@@ -28,7 +29,9 @@ const GradientWrapper: React.FC<GradientWrapperProps> = ({ children }) => {
   });
 
   return (
-    <Animated.View style={[styles.container, { backgroundColor: interpolatedColors }]}>
+    <Animated.View
+      style={[styles.container, { backgroundColor: interpolatedColors }]}
+    >
       <LinearGradient
         colors={linearGradientColors}
         start={{ x: 0, y: 0 }}

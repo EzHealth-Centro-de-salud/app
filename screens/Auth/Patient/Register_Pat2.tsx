@@ -107,6 +107,8 @@ const Register_Pat2: React.FC<Props> = ({ navigation: { navigate } }) => {
         visibilityTime: 1500, // Duration in milliseconds
         autoHide: true,
       });
+      setIsSubmitting(false);
+      return;
     } else {
       if (!emailRegex.test(email)) {
         Toast.show({

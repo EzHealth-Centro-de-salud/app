@@ -73,10 +73,7 @@ const Register_Pat1: React.FC<Props> = ({ navigation: { navigate } }) => {
         maximumDate={new Date()}
         onChange={(event, newDate) => {
           if (newDate) {
-            const adjustedDate = new Date(
-              newDate.getTime() + newDate.getTimezoneOffset() * 60000
-            );
-            setDate(adjustedDate);
+            setDate(newDate);
             setOpen(false);
           }
         }}
@@ -91,7 +88,7 @@ const Register_Pat1: React.FC<Props> = ({ navigation: { navigate } }) => {
       first_name === "" ||
       surname === "" ||
       sex === "" ||
-      birth_date === null
+      !birth_date
     ) {
       Toast.show({
         type: "error",
@@ -281,7 +278,7 @@ const Register_Pat1: React.FC<Props> = ({ navigation: { navigate } }) => {
             style={{
               padding: Spacing * 2,
               backgroundColor: isSubmitting ? Colors.disabled : Colors.primary,
-              marginVertical: Spacing * 1,
+              marginVertical: Spacing,
               borderRadius: Spacing,
               shadowColor: Colors.primary,
               shadowOffset: {

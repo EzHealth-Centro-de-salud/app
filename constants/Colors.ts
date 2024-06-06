@@ -29,4 +29,5 @@ export default {
   textToast: textToast,
   onPrimaryToast: onPrimaryToast,
   disabled: disabled,
+  selected: "#ADD8E6",
 };

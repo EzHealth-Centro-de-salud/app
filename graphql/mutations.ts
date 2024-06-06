@@ -75,3 +75,12 @@ export const CHANGE_PASS_PERSONNEL = gql`
     }
   }
 `;
+
+export const CREATE_APPOINTMENT = gql`
+  mutation CreateAppointment($input: CreateAppointmentInput!) {
+    createAppointment(input: $input) {
+      success
+      message
+    }
+  }
+`;

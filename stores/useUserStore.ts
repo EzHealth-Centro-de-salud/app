@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { devtools, persist, createJSONStorage } from "zustand/middleware";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Branch, Personnel } from "../types";
 
 export type UseUserStoreT = {
   // -----------------------------------Login Data-----------------------------------
@@ -45,6 +46,18 @@ export type UseUserStoreT = {
   setRegPhone: (reg_phone: string) => void;
   setRegPassword: (reg_password: string) => void;
   removeRegData: () => void;
+  // -----------------------------------Appointment Data-----------------------------------
+  appType?: string;
+  appPersonnel?: Personnel;
+  appDate?: Date;
+  appTime?: string;
+  appSchedule?: string[];
+  setAppType: (appType: string) => void;
+  setAppPersonnel: (appPersonnel: Personnel) => void;
+  setAppDate: (appDate: Date) => void;
+  setAppTime: (appTime: string) => void;
+  setAppSchedule: (schedule: string[]) => void;
+  removeAppData: () => void;
 };
 
 export const useUserStore = create<UseUserStoreT>()(
@@ -116,6 +129,25 @@ export const useUserStore = create<UseUserStoreT>()(
             reg_email: undefined,
             reg_phone: undefined,
             reg_password: undefined,
+          }),
+        // -----------------------------------Appointment Data-----------------------------------
+        appType: undefined,
+        appPersonnel: undefined,
+        appDate: undefined,
+        appTime: undefined,
+        appSchedule: undefined,
+        setAppType: (appType: string) => set({ appType }),
+        setAppPersonnel: (appPersonnel: Personnel) => set({ appPersonnel }),
+        setAppDate: (appDate: Date) => set({ appDate }),
+        setAppTime: (appTime: string) => set({ appTime }),
+        setAppSchedule: (appSchedule: string[]) => set({ appSchedule }),
+        removeAppData: () =>
+          set({
+            appType: undefined,
+            appPersonnel: undefined,
+            appDate: undefined,
+            appTime: undefined,
+            appSchedule: undefined,
           }),
       }),
       {
