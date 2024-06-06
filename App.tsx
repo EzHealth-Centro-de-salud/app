@@ -8,7 +8,7 @@ import Toast from "react-native-toast-message";
 import CustomToast from "./components/CustomToast";
 
 const client = new ApolloClient({
-  uri: process.env.EXPO_PUBLIC_LOCAL_BACKEND_URL,
+  uri: process.env.EXPO_PUBLIC_CLOUD_BACKEND_URL,
   cache: new InMemoryCache(),
 });
 
