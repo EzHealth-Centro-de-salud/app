@@ -7,12 +7,14 @@ export type UseUserStoreT = {
   // -----------------------------------Login Data-----------------------------------
   accessToken?: string;
   userId?: number;
+  notifId?: string;
   firstName?: string;
   role?: string;
   speciality?: string;
   rut?: string;
   setAccessToken: (accessToken: string) => void;
   setUserId: (userId: number) => void;
+  setNotifId: (notifId: string) => void;
   setFirstName: (firstName: string) => void;
   setRole: (role: string) => void;
   setSpeciality: (speciality: string) => void;
@@ -67,12 +69,14 @@ export const useUserStore = create<UseUserStoreT>()(
         // -----------------------------------Login Data-----------------------------------
         accessToken: undefined,
         userId: undefined,
+        notifId: undefined,
         firstName: undefined,
         role: undefined,
         speciality: undefined,
         rut: undefined,
         setAccessToken: (accessToken: string) => set({ accessToken }),
         setUserId: (userId: number) => set({ userId }),
+        setNotifId: (notifId: string) => set({ notifId }),
         setFirstName: (firstName: string) => set({ firstName }),
         setRole: (role: string) => set({ role }),
         setSpeciality: (speciality: string) => set({ speciality }),
@@ -81,6 +85,7 @@ export const useUserStore = create<UseUserStoreT>()(
           set({
             accessToken: undefined,
             userId: undefined,
+            notifId: undefined,
             firstName: undefined,
             role: undefined,
             speciality: undefined,

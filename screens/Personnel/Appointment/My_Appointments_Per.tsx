@@ -12,23 +12,23 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useQuery } from "@apollo/client";
 import { useFocusEffect } from "@react-navigation/core";
 import { Icon } from "@rneui/themed";
-import { useUserStore } from "../../../../stores/useUserStore";
-import Spacing from "../../../../constants/Spacing";
-import FontSize from "../../../../constants/FontSize";
-import Colors from "../../../../constants/Colors";
-import Font from "../../../../constants/Font";
-import GradientWrapper from "../../../../components/GradientWrapper";
-import { GET_PATIENT_APPOINTMENTS } from "../../../../graphql/queries";
-import { Appointment, RootStackParamList } from "../../../../types";
-import AppointmentLoader from "../../../../components/Loaders/AppointmentLoader";
+import { useUserStore } from "../../../stores/useUserStore";
+import Spacing from "../../../constants/Spacing";
+import FontSize from "../../../constants/FontSize";
+import Colors from "../../../constants/Colors";
+import Font from "../../../constants/Font";
+import GradientWrapper from "../../../components/GradientWrapper";
+import { GET_PERSONNEL_APPOINTMENTS } from "../../../graphql/queries";
+import { Appointment, RootStackParamList } from "../../../types";
+import AppointmentLoader from "../../../components/Loaders/AppointmentLoader";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { Picker } from "@react-native-picker/picker";
-import { schedule } from "../../../../constants/Schedule";
+import { schedule } from "../../../constants/Schedule";
 import FontAwesome from "react-native-vector-icons/FontAwesome5";
 
-type Props = NativeStackScreenProps<RootStackParamList, "My_Appointments_Pat">;
+type Props = NativeStackScreenProps<RootStackParamList, "My_Appointments_Per">;
 
-const My_Appointments_Pat: React.FC<Props> = ({ navigation: { navigate } }) => {
+const My_Appointments_Per: React.FC<Props> = ({ navigation: { navigate } }) => {
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const { userId } = useUserStore();
   const [isLoading, setIsLoading] = useState(false);
@@ -40,7 +40,7 @@ const My_Appointments_Pat: React.FC<Props> = ({ navigation: { navigate } }) => {
   const [openDatePicker, setOpenDatePicker] = useState(false);
 
   const { data: appointmentData, refetch: refetchAppointments } = useQuery(
-    GET_PATIENT_APPOINTMENTS,
+    GET_PERSONNEL_APPOINTMENTS,
     {
       variables: { id: userId },
       skip: !userId,
@@ -55,7 +55,7 @@ const My_Appointments_Pat: React.FC<Props> = ({ navigation: { navigate } }) => {
 
       refetchAppointments()
         .then(({ data }) => {
-          const appointments = data?.getPatient.appointments || [];
+          const appointments = data?.getPersonnel.appointments || [];
           const sortedAppointments = appointments
             .slice()
             .sort(
@@ -113,7 +113,7 @@ const My_Appointments_Pat: React.FC<Props> = ({ navigation: { navigate } }) => {
         <View style={{ padding: Spacing * 2 }}>
           <View style={{ alignItems: "center" }}>
             <TouchableOpacity
-              onPress={() => navigate("Dashboard_Pat")}
+              onPress={() => navigate("Dashboard_Per")}
               disabled={isLoading}
               style={{
                 position: "absolute",
@@ -307,17 +307,8 @@ const My_Appointments_Pat: React.FC<Props> = ({ navigation: { navigate } }) => {
                             fontSize: FontSize.small,
                           }}
                         >
-                          Medico: {app.personnel.first_name}{" "}
-                          {app.personnel.surname}
-                        </Text>
-                        <Text
-                          style={{
-                            fontFamily: Font["poppins-regular"],
-                            color: Colors.primary,
-                            fontSize: FontSize.small,
-                          }}
-                        >
-                          Especialidad: {app.personnel.speciality}
+                          Paciente: {app.patient.first_name}{" "}
+                          {app.patient.surname}
                         </Text>
                       </View>
                     )}
@@ -332,6 +323,6 @@ const My_Appointments_Pat: React.FC<Props> = ({ navigation: { navigate } }) => {
   );
 };
 
-export default My_Appointments_Pat;
+export default My_Appointments_Per;
 
 const styles = StyleSheet.create({});

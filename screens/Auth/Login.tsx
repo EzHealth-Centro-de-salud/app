@@ -22,6 +22,7 @@ import { Icon } from "@rneui/themed";
 import GradientWrapper from "../../components/GradientWrapper";
 import { LOGIN_PATIENT, LOGIN_PERSONNEL } from "../../graphql/mutations";
 import { useFocusEffect } from "@react-navigation/native";
+import { registerIndieID } from "native-notify";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Login">;
 
@@ -31,12 +32,15 @@ const Login: React.FC<Props> = ({ navigation: { navigate } }) => {
   const [accountType, setAccountType] = useState("patient");
   const [rut, setRut] = useState("");
   const [password, setPassword] = useState("");
-  const { setUserId } = useUserStore();
-  const { setAccessToken } = useUserStore();
-  const { setFirstName } = useUserStore();
-  const { setRole } = useUserStore();
-  const { setSpeciality } = useUserStore();
-  const { removeRegData } = useUserStore();
+  const {
+    setUserId,
+    setAccessToken,
+    setFirstName,
+    setRole,
+    setSpeciality,
+    setNotifId,
+  } = useUserStore();
+  const { removeRegData, removeLoginData } = useUserStore();
   const [loginPatient] = useMutation(LOGIN_PATIENT);
   const [loginPersonnel] = useMutation(LOGIN_PERSONNEL);
 
@@ -50,6 +54,7 @@ const Login: React.FC<Props> = ({ navigation: { navigate } }) => {
 
   useFocusEffect(
     React.useCallback(() => {
+      removeLoginData();
       removeRegData();
     }, [])
   );
@@ -82,10 +87,16 @@ const Login: React.FC<Props> = ({ navigation: { navigate } }) => {
             },
           });
           if (data?.loginPatient) {
-            setIsLoading(false);
             setUserId(data.loginPatient.id);
+            const notif = `${data.loginPatient.id}`;
+            setNotifId(notif);
             setFirstName(data.loginPatient.first_name);
             setAccessToken(data.loginPatient.accessToken);
+            registerIndieID(
+              notif,
+              process.env.EXPO_PUBLIC_NOTIF_ID,
+              process.env.EXPO_PUBLIC_NOTIF_TOKEN
+            );
             Toast.show({
               type: "success",
               text1: "Ingreso exitoso",
@@ -94,6 +105,7 @@ const Login: React.FC<Props> = ({ navigation: { navigate } }) => {
               visibilityTime: 1250, // Duration in milliseconds
               autoHide: true,
             });
+            setIsLoading(false);
             navigate("Dashboard_Pat");
           }
         } else {
@@ -108,13 +120,18 @@ const Login: React.FC<Props> = ({ navigation: { navigate } }) => {
             },
           });
           if (data?.loginPersonnel) {
-            setIsLoading(false);
-            console.log(data.loginPersonnel);
             setUserId(data.loginPersonnel.id);
+            const notif = "-" + `${data.loginPersonnel.id}`;
+            setNotifId(notif);
             setFirstName(data.loginPersonnel.first_name);
             setRole(data.loginPersonnel.role);
             setSpeciality(data.loginPersonnel.speciality);
             setAccessToken(data.loginPersonnel.accessToken);
+            registerIndieID(
+              notif,
+              process.env.EXPO_PUBLIC_NOTIF_ID,
+              process.env.EXPO_PUBLIC_NOTIF_TOKEN
+            );
             Toast.show({
               type: "success",
               text1: "Ingreso exitoso",
@@ -123,7 +140,8 @@ const Login: React.FC<Props> = ({ navigation: { navigate } }) => {
               visibilityTime: 1250, // Duration in milliseconds
               autoHide: true,
             });
-            //navigate("Dashboard_Per");
+            setIsLoading(false);
+            navigate("Dashboard_Per");
           }
         }
       } catch (e) {
@@ -196,6 +214,7 @@ const Login: React.FC<Props> = ({ navigation: { navigate } }) => {
           >
             {/* -----------------------------------Patient Button----------------------------------- */}
             <TouchableOpacity
+              disabled={isLoading || isSubmitting}
               style={{
                 flex: 1,
                 padding: Spacing * 1,
@@ -225,6 +244,7 @@ const Login: React.FC<Props> = ({ navigation: { navigate } }) => {
             </TouchableOpacity>
             {/* -----------------------------------Personnel Button----------------------------------- */}
             <TouchableOpacity
+              disabled={isLoading || isSubmitting}
               style={{
                 flex: 1,
                 padding: Spacing * 1,
@@ -280,7 +300,7 @@ const Login: React.FC<Props> = ({ navigation: { navigate } }) => {
             disabled={isLoading || isSubmitting}
             style={{
               padding: Spacing * 2,
-              backgroundColor: isSubmitting ? Colors.disabled : Colors.primary,
+              backgroundColor: isLoading ? Colors.disabled : Colors.primary,
               marginVertical: Spacing * 1,
               borderRadius: Spacing,
               shadowColor: Colors.primary,

@@ -6,14 +6,19 @@ import Navigation from "./navigation";
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 import Toast from "react-native-toast-message";
 import CustomToast from "./components/CustomToast";
+import registerNNPushToken from "native-notify";
 
 const client = new ApolloClient({
-  uri: process.env.EXPO_PUBLIC_CLOUD_BACKEND_URL,
+  uri: process.env.EXPO_PUBLIC_LOCAL_BACKEND_URL,
   cache: new InMemoryCache(),
 });
 
 export default function App() {
   const [fontsLoaded] = useFonts(fonts);
+  registerNNPushToken(
+    process.env.EXPO_PUBLIC_NOTIF_ID,
+    process.env.EXPO_PUBLIC_NOTIF_TOKEN
+  );
 
   return !fontsLoaded ? null : (
     <ApolloProvider client={client}>

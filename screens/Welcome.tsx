@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import Spacing from "../constants/Spacing";
 import FontSize from "../constants/FontSize";
 import Colors from "../constants/Colors";
@@ -16,10 +16,29 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../types";
 const { height } = Dimensions.get("window");
 import GradientWrapper from "../components/GradientWrapper";
+import { useFocusEffect } from "@react-navigation/native";
+import { useUserStore } from "../stores/useUserStore";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Welcome">;
 
 const Welcome: React.FC<Props> = ({ navigation: { navigate } }) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const { userId, speciality } = useUserStore();
+
+  useFocusEffect(
+    React.useCallback(() => {
+      setIsLoading(true);
+      if (userId && speciality) {
+        navigate("Dashboard_Per");
+      } else {
+        if (userId) {
+          navigate("Dashboard_Pat");
+        }
+      }
+      setIsLoading(false);
+    }, [])
+  );
+
   return (
     <GradientWrapper>
       <SafeAreaView>
@@ -71,6 +90,7 @@ const Welcome: React.FC<Props> = ({ navigation: { navigate } }) => {
             }}
           >
             <TouchableOpacity
+              disabled={isLoading}
               onPress={() => navigate("Login")}
               style={{
                 padding: Spacing * 2,

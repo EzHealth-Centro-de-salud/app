@@ -18,11 +18,12 @@ export type RootStackParamList = {
   ValidateCode_Per: undefined;
   ChangePass_Per: undefined;
   Dashboard_Pat: undefined;
-  Dashboard_Per: undefined;
   My_Appointments_Pat: undefined;
   Create_Appointment_1: undefined;
   Create_Appointment_2: undefined;
   Confirm_Details: undefined;
+  Dashboard_Per: undefined;
+  My_Appointments_Per: undefined;
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> =

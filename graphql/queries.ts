@@ -29,6 +29,25 @@ export const GET_PATIENT_APPOINTMENTS = gql`
   }
 `;
 
+export const GET_PERSONNEL_APPOINTMENTS = gql`
+  query GetPersonnelAppointments($id: Int!) {
+    getPersonnel(id: $id) {
+      appointments {
+        id
+        date
+        time
+        type
+        status
+        patient {
+          id
+          first_name
+          surname
+        }
+      }
+    }
+  }
+`;
+
 export const GET_ALL_BRANCHES = gql`
   query GetAllBranches {
     getAllBranches {

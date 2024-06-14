@@ -19,15 +19,21 @@ import { useFocusEffect, useIsFocused } from "@react-navigation/native";
 import Toast from "react-native-toast-message";
 import { Icon } from "@rneui/themed";
 import GradientWrapper from "../../components/GradientWrapper";
+import { unregisterIndieDevice } from "native-notify";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Dashboard_Pat">;
 
 const Dashboard_Pat: React.FC<Props> = ({ navigation: { navigate } }) => {
-  const { removeLoginData, removeAppData, firstName } = useUserStore();
+  const { removeLoginData, removeAppData, firstName, notifId } = useUserStore();
   const isFocused = useIsFocused();
 
   const logout = async () => {
     await removeLoginData();
+    unregisterIndieDevice(
+      notifId,
+      process.env.EXPO_PUBLIC_NOTIF_ID,
+      process.env.EXPO_PUBLIC_NOTIF_TOKEN
+    );
     Toast.show({
       type: "success",
       text1: "Sesión cerrada exitosamente",
@@ -36,7 +42,7 @@ const Dashboard_Pat: React.FC<Props> = ({ navigation: { navigate } }) => {
       visibilityTime: 1500, // Duration in milliseconds
       autoHide: true,
     });
-    navigate("Welcome");
+    navigate("Login");
   };
 
   const buttons = [

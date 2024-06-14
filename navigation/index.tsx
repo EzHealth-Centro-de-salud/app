@@ -18,6 +18,8 @@ import My_Appointments_Pat from "../screens/Patient/Appointment/View_Appointment
 import Create_Appointment_1 from "../screens/Patient/Appointment/Create_Appointment/Create_Appointment_1";
 import Create_Appointment_2 from "../screens/Patient/Appointment/Create_Appointment/Create_Appointment_2";
 import Confirm_Details from "../screens/Patient/Appointment/Create_Appointment/Confirm_Details";
+import Dashboard_Per from "../screens/Personnel/Dashboard_Per";
+import My_Appointments_Per from "../screens/Personnel/Appointment/My_Appointments_Per";
 
 const theme = {
   ...DefaultTheme,
@@ -68,6 +70,11 @@ function RootNavigator() {
         component={Create_Appointment_2}
       />
       <Stack.Screen name="Confirm_Details" component={Confirm_Details} />
+      <Stack.Screen name="Dashboard_Per" component={Dashboard_Per} />
+      <Stack.Screen
+        name="My_Appointments_Per"
+        component={My_Appointments_Per}
+      />
     </Stack.Navigator>
   );
 }
