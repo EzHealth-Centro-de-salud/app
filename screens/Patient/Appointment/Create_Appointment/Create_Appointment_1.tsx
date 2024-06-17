@@ -35,7 +35,7 @@ const Create_Appointment_1: React.FC<Props> = ({
   const [personnel, setPersonnel] = useState<Personnel | null>(null);
   const [date, setDate] = useState<Date | null>(null);
   const [openDatePicker, setOpenDatePicker] = useState(false);
-  const { setAppType, setAppPersonnel, setAppDate, setAppSchedule } =
+  const { setAppType, setAppPersonnel, setAppDate, setAppSchedule, userId } =
     useUserStore();
 
   const { data: branchData, loading } = useQuery(GET_ALL_BRANCHES);
@@ -107,6 +107,7 @@ const Create_Appointment_1: React.FC<Props> = ({
         const result = await refetchSchedule({
           input: {
             id_personnel: personnel.id,
+            id_patient: userId,
             date: date.toLocaleDateString("en-CA").split("T")[0],
           },
         });
