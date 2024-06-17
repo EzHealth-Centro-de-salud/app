@@ -1,5 +1,6 @@
 import {
   ActivityIndicator,
+  BackHandler,
   SafeAreaView,
   StyleSheet,
   Text,
@@ -56,6 +57,25 @@ const Login: React.FC<Props> = ({ navigation: { navigate } }) => {
     React.useCallback(() => {
       removeLoginData();
       removeRegData();
+    }, [])
+  );
+
+  // Dentro de tu componente Login
+  useFocusEffect(
+    React.useCallback(() => {
+      const onBackPress = () => {
+        // Aquí puedes manejar lo que sucede cuando se presiona el botón de volver.
+        // Si retornas true, indica que has manejado el evento de volver.
+        // Si retornas false, el comportamiento por defecto (volver a la pantalla anterior) se ejecutará.
+        return true;
+      };
+
+      // Agrega el listener para el evento de volver
+      BackHandler.addEventListener("hardwareBackPress", onBackPress);
+
+      // No olvides remover el listener cuando el componente se desmonte o pierda el foco
+      return () =>
+        BackHandler.removeEventListener("hardwareBackPress", onBackPress);
     }, [])
   );
 
@@ -174,30 +194,13 @@ const Login: React.FC<Props> = ({ navigation: { navigate } }) => {
               alignItems: "center",
             }}
           >
-            <TouchableOpacity
-              onPress={() => navigate("Welcome")}
-              disabled={isLoading || isSubmitting}
-              style={{
-                position: "absolute",
-                top: Spacing * 1.5,
-                left: -Spacing,
-                zIndex: 1,
-              }}
-            >
-              <Icon
-                size={30}
-                name="arrow-back"
-                type="Ionicons"
-                color={Colors.primary}
-              />
-            </TouchableOpacity>
             {/* -----------------------------------Main Title----------------------------------- */}
             <Text
               style={{
                 fontSize: FontSize.xLarge,
                 color: Colors.primary,
                 fontFamily: Font["poppins-bold"],
-                marginTop: Spacing * 5,
+                marginTop: Spacing * 4,
                 marginBottom: Spacing * 1,
                 textAlign: "center",
               }}
