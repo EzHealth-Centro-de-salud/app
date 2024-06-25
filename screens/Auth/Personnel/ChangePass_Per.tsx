@@ -41,10 +41,6 @@ const ChangePass_Per: React.FC<Props> = ({ navigation: { navigate } }) => {
     isSubmitting
   );
 
-  useEffect(() => {
-    console.log(rut);
-  });
-
   const handleChangePass = async (password: string, password2: string) => {
     setIsSubmitting(true);
     if (password === "" || password2 === "") {

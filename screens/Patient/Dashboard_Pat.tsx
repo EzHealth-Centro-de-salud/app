@@ -17,7 +17,6 @@ import { RootStackParamList } from "../../types";
 import { useUserStore } from "../../stores/useUserStore";
 import { useFocusEffect, useIsFocused } from "@react-navigation/native";
 import Toast from "react-native-toast-message";
-import { Icon } from "@rneui/themed";
 import GradientWrapper from "../../components/GradientWrapper";
 import { unregisterIndieDevice } from "native-notify";
 
@@ -57,6 +56,11 @@ const Dashboard_Pat: React.FC<Props> = ({ navigation: { navigate } }) => {
       onPress: () => navigate("My_Appointments_Pat"),
     },
     {
+      label: "Historial Médico",
+      icon: "notes-medical",
+      onPress: () => navigate("Medical_Record_Pat_1"),
+    },
+    {
       label: "Cerrar Sesion",
       icon: "sign-out-alt",
       onPress: () => logout(),
@@ -66,6 +70,7 @@ const Dashboard_Pat: React.FC<Props> = ({ navigation: { navigate } }) => {
   const buttonColors = {
     "Agendar Cita": "royalblue",
     "Mis Citas": "dodgerblue",
+    "Historial Médico": "green",
     "Cerrar Sesion": "red",
   };
 

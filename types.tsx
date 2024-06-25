@@ -24,6 +24,15 @@ export type RootStackParamList = {
   Confirm_Details: undefined;
   Dashboard_Per: undefined;
   My_Appointments_Per: undefined;
+  Reschedule_1: undefined;
+  Reschedule_2: undefined;
+  Confirm_Reschedule: undefined;
+  Medical_Record_Pat_1: undefined;
+  Medical_Record_Pat_2: undefined;
+  Patients_List: undefined;
+  Patient_Profile: undefined;
+  Medical_Record_Per_1: undefined;
+  Medical_Record_Per_2: undefined;
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> =
@@ -106,6 +115,7 @@ export interface MedicalRecord {
   date_time: string;
   patient: Patient;
   personnel: Personnel;
+  appointment: Appointment;
 }
 
 export interface Availability {

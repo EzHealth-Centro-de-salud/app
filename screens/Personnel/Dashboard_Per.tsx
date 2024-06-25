@@ -20,12 +20,19 @@ import Toast from "react-native-toast-message";
 import { Icon } from "@rneui/themed";
 import GradientWrapper from "../../components/GradientWrapper";
 import { unregisterIndieDevice } from "native-notify";
+import { GET_PERSONNEL_APPOINTMENTS } from "../../graphql/queries";
+import { useQuery } from "@apollo/client";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Dashboard_Per">;
 
 const Dashboard_Per: React.FC<Props> = ({ navigation: { navigate } }) => {
-  const { removeLoginData, firstName, notifId } = useUserStore();
+  const { removeLoginData, firstName, userId, notifId } = useUserStore();
   const isFocused = useIsFocused();
+
+  const { data } = useQuery(GET_PERSONNEL_APPOINTMENTS, {
+    variables: { id: userId },
+    skip: !userId,
+  });
 
   const logout = async () => {
     await removeLoginData();
@@ -52,6 +59,11 @@ const Dashboard_Per: React.FC<Props> = ({ navigation: { navigate } }) => {
       onPress: () => navigate("My_Appointments_Per"),
     },
     {
+      label: "Lista de Pacientes",
+      icon: "hospital-user",
+      onPress: () => navigate("Patients_List"),
+    },
+    {
       label: "Cerrar Sesion",
       icon: "sign-out-alt",
       onPress: () => logout(),
@@ -60,6 +72,7 @@ const Dashboard_Per: React.FC<Props> = ({ navigation: { navigate } }) => {
 
   const buttonColors = {
     "Mis Citas": "dodgerblue",
+    "Lista de Pacientes": "green",
     "Cerrar Sesion": "red",
   };
 
@@ -78,6 +91,27 @@ const Dashboard_Per: React.FC<Props> = ({ navigation: { navigate } }) => {
     );
     return () => backHandler.remove();
   }, [isFocused]);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      if (data) {
+        const app = data.getPersonnel.appointments;
+        const pendingApp = app.filter(
+          (appointment) => appointment.status === "Pendiente"
+        );
+        if (pendingApp.length > 0) {
+          Toast.show({
+            type: "info",
+            text1: "Tienes citas sin confirmar",
+            text2: "Revisa la sección de Mis Citas",
+            position: "bottom",
+            visibilityTime: 3000, // Duration in milliseconds
+            autoHide: true,
+          });
+        }
+      }
+    }, [])
+  );
 
   return (
     <GradientWrapper>
@@ -177,5 +211,3 @@ const Dashboard_Per: React.FC<Props> = ({ navigation: { navigate } }) => {
 };
 
 export default Dashboard_Per;
-
-const styles = StyleSheet.create({});

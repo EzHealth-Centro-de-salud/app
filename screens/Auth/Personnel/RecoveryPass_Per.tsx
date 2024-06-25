@@ -67,7 +67,6 @@ const RecoveryPass_Per: React.FC<Props> = ({ navigation: { navigate } }) => {
           navigate("ValidateCode_Per");
         }
       } catch (e) {
-        console.log(e);
         setIsSubmitting(false);
         setIsLoading(false);
         Toast.show({

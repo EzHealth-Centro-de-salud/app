@@ -1,50 +1,48 @@
 import React, { useState } from "react";
 import {
-  Dimensions,
   SafeAreaView,
   ScrollView,
-  StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
+import Spacing from "../../../constants/Spacing";
+import FontSize from "../../../constants/FontSize";
+import Colors from "../../../constants/Colors";
+import Font from "../../../constants/Font";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { useQuery } from "@apollo/client";
-import { useFocusEffect } from "@react-navigation/core";
+import { MedicalRecord, Personnel, RootStackParamList } from "../../../types";
+import { useUserStore } from "../../../stores/useUserStore";
 import { Icon } from "@rneui/themed";
-import { useUserStore } from "../../../../stores/useUserStore";
-import Spacing from "../../../../constants/Spacing";
-import FontSize from "../../../../constants/FontSize";
-import Colors from "../../../../constants/Colors";
-import Font from "../../../../constants/Font";
-import GradientWrapper from "../../../../components/GradientWrapper";
-import { GET_PATIENT_APPOINTMENTS } from "../../../../graphql/queries";
-import { Appointment, RootStackParamList } from "../../../../types";
-import AppointmentLoader from "../../../../components/Loaders/AppointmentLoader";
+import GradientWrapper from "../../../components/GradientWrapper";
+import FontAwesome from "react-native-vector-icons/FontAwesome5";
+import { useQuery } from "@apollo/client";
+import { GET_PATIENT_MEDICAL_RECORDS } from "../../../graphql/queries";
+import AppointmentLoader from "../../../components/Loaders/AppointmentLoader";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { Picker } from "@react-native-picker/picker";
-import { schedule } from "../../../../constants/Schedule";
-import FontAwesome from "react-native-vector-icons/FontAwesome5";
+import { schedule } from "../../../constants/Schedule";
+import { useFocusEffect } from "@react-navigation/native";
 
-type Props = NativeStackScreenProps<RootStackParamList, "My_Appointments_Pat">;
+type Props = NativeStackScreenProps<RootStackParamList, "Medical_Record_Pat_1">;
 
-const My_Appointments_Pat: React.FC<Props> = ({ navigation: { navigate } }) => {
-  const [appointments, setAppointments] = useState<Appointment[]>([]);
-  const { userId } = useUserStore();
+const Medical_Record_Pat_1: React.FC<Props> = ({
+  navigation: { navigate },
+}) => {
+  const { userId, setMedicalRecord } = useUserStore();
+  const [medical_records, setMedicalRecords] = useState<MedicalRecord[]>([]);
+  const [personnel, setPersonnel] = useState<Personnel[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [expandedAppointmentIds, setExpandedAppointmentIds] = useState<
-    string[]
-  >([]);
   const [filterDate, setFilterDate] = useState<Date | null>(null);
   const [filterTime, setFilterTime] = useState<string | null>(null);
   const [openDatePicker, setOpenDatePicker] = useState(false);
-  const [filterStatus, setFilterStatus] = useState<string | null>(null);
+  const [idPersonnel, setIdPersonnel] = useState<number | null>(null);
 
-  const { data: appointmentData, refetch: refetchAppointments } = useQuery(
-    GET_PATIENT_APPOINTMENTS,
+  const { data: MedRecData, refetch: refetchMedRec } = useQuery(
+    GET_PATIENT_MEDICAL_RECORDS,
     {
       variables: { id: userId },
-      skip: !userId,
+      skip: true,
     }
   );
 
@@ -54,31 +52,28 @@ const My_Appointments_Pat: React.FC<Props> = ({ navigation: { navigate } }) => {
 
       setIsLoading(true);
 
-      refetchAppointments()
+      refetchMedRec()
         .then(({ data }) => {
-          const appointments = data?.getPatient.appointments || [];
-          const sortedAppointments = appointments
-            .slice()
-            .sort(
-              (a: Appointment, b: Appointment) =>
-                new Date(`${a.date}T${a.time}`).getTime() -
-                new Date(`${b.date}T${b.time}`).getTime()
-            );
-          setAppointments(sortedAppointments);
+          const medRecs = data?.getPatient.medical_records || [];
+          const allPersonnel = medRecs.map((medRec) => medRec.personnel);
+          const uniquePersonnel = allPersonnel.reduce((acc, current) => {
+            const x = acc.find((item) => item.id === current.id);
+            if (!x) {
+              return acc.concat([current]);
+            } else {
+              return acc;
+            }
+          }, []);
+          setPersonnel(uniquePersonnel);
+          setMedicalRecords(medRecs);
           setIsLoading(false);
         })
         .catch((error) => {
-          console.error("Error al cargar las citas:", error);
+          console.error("Error al cargar el historial médico:", error);
           setIsLoading(false);
         });
-    }, [userId, refetchAppointments])
+    }, [userId, refetchMedRec])
   );
-
-  const toggleExpanded = (id: string) => {
-    setExpandedAppointmentIds((prev) =>
-      prev.includes(id) ? prev.filter((appId) => appId !== id) : [...prev, id]
-    );
-  };
 
   const renderDateTimePicker = (
     selectedDate: Date | null,
@@ -99,24 +94,42 @@ const My_Appointments_Pat: React.FC<Props> = ({ navigation: { navigate } }) => {
     );
   };
 
-  const filteredAppointments = appointments.filter((app) => {
-    const appDate = new Date(`${app.date}T${app.time}`);
+  const filteredMedRec = medical_records.filter((medRec) => {
+    const medRecDate = new Date(
+      `${medRec.appointment.date}T${medRec.appointment.time}`
+    );
     const matchesDate = filterDate
-      ? appDate.toDateString() === filterDate.toDateString()
+      ? medRecDate.toDateString() === filterDate.toDateString()
       : true;
-    const matchesTime = filterTime ? app.time === filterTime : true;
-    const matchesStatus = filterStatus ? app.status === filterStatus : true;
-    return matchesDate && matchesTime && matchesStatus;
+    const matchesTime = filterTime
+      ? medRec.appointment.time === filterTime
+      : true;
+    const matchesPersonnel = idPersonnel
+      ? medRec.personnel.id === idPersonnel
+      : true;
+    return matchesDate && matchesTime && matchesPersonnel;
   });
+
+  const handleSelection = (medical_record: MedicalRecord) => {
+    setMedicalRecord(medical_record);
+    navigate("Medical_Record_Pat_2");
+  };
 
   return (
     <GradientWrapper>
       <SafeAreaView>
-        <View style={{ padding: Spacing * 2 }}>
-          <View style={{ alignItems: "center" }}>
+        <View
+          style={{
+            padding: Spacing * 2,
+          }}
+        >
+          <View
+            style={{
+              alignItems: "center",
+            }}
+          >
             <TouchableOpacity
               onPress={() => navigate("Dashboard_Pat")}
-              disabled={isLoading}
               style={{
                 position: "absolute",
                 top: Spacing * 1.5,
@@ -137,14 +150,13 @@ const My_Appointments_Pat: React.FC<Props> = ({ navigation: { navigate } }) => {
                 color: Colors.primary,
                 fontFamily: Font["poppins-bold"],
                 marginTop: Spacing * 5,
-                marginBottom: Spacing * 1,
+                marginBottom: Spacing,
                 textAlign: "center",
               }}
             >
-              Mis Citas
+              Historial Médico
             </Text>
           </View>
-
           <View
             style={{
               flexDirection: "row",
@@ -217,22 +229,26 @@ const My_Appointments_Pat: React.FC<Props> = ({ navigation: { navigate } }) => {
                 backgroundColor: Colors.lightPrimary,
                 borderRadius: Spacing,
               }}
-              selectedValue={filterStatus}
-              onValueChange={(itemValue) => setFilterStatus(itemValue)}
+              selectedValue={idPersonnel}
+              onValueChange={(itemValue) => setIdPersonnel(itemValue)}
             >
-              <Picker.Item label="Estado" value={null} />
-              <Picker.Item label="Pendiente" value="Pendiente" />
-              <Picker.Item label="Confirmada" value="Confirmada" />
-              <Picker.Item label="Cancelada" value="Cancelada" />
-              <Picker.Item label="Completada" value="Completada" />
+              <Picker.Item label="Médico" value={null} />
+              {personnel.map((per) => (
+                <Picker.Item
+                  key={per.id}
+                  label={
+                    per.first_name + " " + per.surname + " - " + per.speciality
+                  }
+                  value={per.id}
+                />
+              ))}
             </Picker>
           </View>
-
           {isLoading ? (
             <AppointmentLoader />
           ) : (
             <ScrollView style={{ maxHeight: 490 }}>
-              {filteredAppointments.length === 0 ? (
+              {filteredMedRec.length === 0 ? (
                 <View
                   style={{
                     paddingHorizontal: Spacing * 2,
@@ -244,14 +260,14 @@ const My_Appointments_Pat: React.FC<Props> = ({ navigation: { navigate } }) => {
                   <Text
                     style={{ fontSize: FontSize.large, color: Colors.primary }}
                   >
-                    No hay citas agendadas.
+                    No posee ningun historial médico.
                   </Text>
                 </View>
               ) : (
-                filteredAppointments.map((app) => (
+                filteredMedRec.map((record) => (
                   <TouchableOpacity
-                    key={app.id}
-                    onPress={() => toggleExpanded(app.id)}
+                    key={record.id}
+                    onPress={() => handleSelection(record)}
                     style={{
                       backgroundColor: Colors.primary,
                       paddingVertical: Spacing,
@@ -270,27 +286,6 @@ const My_Appointments_Pat: React.FC<Props> = ({ navigation: { navigate } }) => {
                         justifyContent: "space-between",
                       }}
                     >
-                      <View style={{ justifyContent: "center" }}>
-                        <Text
-                          style={{
-                            fontFamily: Font["poppins-bold"],
-                            color: Colors.onPrimary,
-                            fontSize: FontSize.medium,
-                          }}
-                        >
-                          {app.type}
-                        </Text>
-                        <Text
-                          style={{
-                            fontFamily: Font["poppins-regular"],
-                            color: Colors.onPrimary,
-                            fontSize: FontSize.small,
-                            textAlign: "left",
-                          }}
-                        >
-                          {app.status}
-                        </Text>
-                      </View>
                       <View>
                         <Text
                           style={{
@@ -299,59 +294,26 @@ const My_Appointments_Pat: React.FC<Props> = ({ navigation: { navigate } }) => {
                             fontSize: FontSize.medium,
                           }}
                         >
-                          {app.date}
+                          {record.appointment.date} - {record.appointment.time}
                         </Text>
                         <Text
                           style={{
-                            fontFamily: Font["poppins-regular"],
+                            fontFamily: Font["poppins-bold"],
                             color: Colors.onPrimary,
-                            fontSize: FontSize.small,
-                            textAlign: "right",
+                            fontSize: FontSize.medium,
                           }}
                         >
-                          {app.time}
+                          {record.personnel.first_name}{" "}
+                          {record.personnel.surname}
                         </Text>
                       </View>
+                      <FontAwesome
+                        name="chevron-right"
+                        size={20}
+                        color={Colors.onPrimary}
+                        style={{ alignSelf: "center" }}
+                      />
                     </View>
-                    {expandedAppointmentIds.includes(app.id) && (
-                      <View
-                        style={{
-                          marginTop: Spacing,
-                          backgroundColor: Colors.onPrimary,
-                          padding: Spacing,
-                          borderRadius: Spacing,
-                        }}
-                      >
-                        <Text
-                          style={{
-                            fontFamily: Font["poppins-regular"],
-                            color: Colors.primary,
-                            fontSize: FontSize.small,
-                          }}
-                        >
-                          Estado: {app.status}
-                        </Text>
-                        <Text
-                          style={{
-                            fontFamily: Font["poppins-regular"],
-                            color: Colors.primary,
-                            fontSize: FontSize.small,
-                          }}
-                        >
-                          Medico: {app.personnel.first_name}{" "}
-                          {app.personnel.surname}
-                        </Text>
-                        <Text
-                          style={{
-                            fontFamily: Font["poppins-regular"],
-                            color: Colors.primary,
-                            fontSize: FontSize.small,
-                          }}
-                        >
-                          Especialidad: {app.personnel.speciality}
-                        </Text>
-                      </View>
-                    )}
                   </TouchableOpacity>
                 ))
               )}
@@ -363,6 +325,4 @@ const My_Appointments_Pat: React.FC<Props> = ({ navigation: { navigate } }) => {
   );
 };
 
-export default My_Appointments_Pat;
-
-const styles = StyleSheet.create({});
+export default Medical_Record_Pat_1;

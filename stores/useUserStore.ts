@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { devtools, persist, createJSONStorage } from "zustand/middleware";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Branch, Personnel } from "../types";
+import { Branch, MedicalRecord, Patient, Personnel } from "../types";
 
 export type UseUserStoreT = {
   // -----------------------------------Login Data-----------------------------------
@@ -9,6 +9,7 @@ export type UseUserStoreT = {
   userId?: number;
   notifId?: string;
   firstName?: string;
+  surName?: string;
   role?: string;
   speciality?: string;
   rut?: string;
@@ -16,6 +17,7 @@ export type UseUserStoreT = {
   setUserId: (userId: number) => void;
   setNotifId: (notifId: string) => void;
   setFirstName: (firstName: string) => void;
+  setSurName: (surName: string) => void;
   setRole: (role: string) => void;
   setSpeciality: (speciality: string) => void;
   setRut: (rut: string) => void;
@@ -49,17 +51,27 @@ export type UseUserStoreT = {
   setRegPassword: (reg_password: string) => void;
   removeRegData: () => void;
   // -----------------------------------Appointment Data-----------------------------------
+  appId?: number;
   appType?: string;
   appPersonnel?: Personnel;
+  appPatient?: Patient;
   appDate?: Date;
   appTime?: string;
   appSchedule?: string[];
+  setAppId: (appId: number) => void;
   setAppType: (appType: string) => void;
   setAppPersonnel: (appPersonnel: Personnel) => void;
+  setAppPatient: (appPatient: Patient) => void;
   setAppDate: (appDate: Date) => void;
   setAppTime: (appTime: string) => void;
   setAppSchedule: (schedule: string[]) => void;
   removeAppData: () => void;
+  // -----------------------------------Patient Data-----------------------------------
+  patient?: Patient;
+  setPatient: (patient: Patient) => void;
+  // -----------------------------------Medical Record Data-----------------------------------
+  medicalRecord?: MedicalRecord;
+  setMedicalRecord: (medicalRecord: MedicalRecord) => void;
 };
 
 export const useUserStore = create<UseUserStoreT>()(
@@ -71,6 +83,7 @@ export const useUserStore = create<UseUserStoreT>()(
         userId: undefined,
         notifId: undefined,
         firstName: undefined,
+        surName: undefined,
         role: undefined,
         speciality: undefined,
         rut: undefined,
@@ -78,6 +91,7 @@ export const useUserStore = create<UseUserStoreT>()(
         setUserId: (userId: number) => set({ userId }),
         setNotifId: (notifId: string) => set({ notifId }),
         setFirstName: (firstName: string) => set({ firstName }),
+        setSurName: (surName: string) => set({ surName }),
         setRole: (role: string) => set({ role }),
         setSpeciality: (speciality: string) => set({ speciality }),
         setRut: (rut: string) => set({ rut }),
@@ -87,6 +101,7 @@ export const useUserStore = create<UseUserStoreT>()(
             userId: undefined,
             notifId: undefined,
             firstName: undefined,
+            surName: undefined,
             role: undefined,
             speciality: undefined,
             rut: undefined,
@@ -136,24 +151,36 @@ export const useUserStore = create<UseUserStoreT>()(
             reg_password: undefined,
           }),
         // -----------------------------------Appointment Data-----------------------------------
+        appId: undefined,
         appType: undefined,
         appPersonnel: undefined,
         appDate: undefined,
         appTime: undefined,
         appSchedule: undefined,
+        setAppId: (appId: number) => set({ appId }),
         setAppType: (appType: string) => set({ appType }),
         setAppPersonnel: (appPersonnel: Personnel) => set({ appPersonnel }),
+        setAppPatient: (appPatient: Patient) => set({ appPatient }),
         setAppDate: (appDate: Date) => set({ appDate }),
         setAppTime: (appTime: string) => set({ appTime }),
         setAppSchedule: (appSchedule: string[]) => set({ appSchedule }),
         removeAppData: () =>
           set({
+            appId: undefined,
             appType: undefined,
             appPersonnel: undefined,
+            appPatient: undefined,
             appDate: undefined,
             appTime: undefined,
             appSchedule: undefined,
           }),
+        // -----------------------------------Patient Data-----------------------------------
+        patient: undefined,
+        setPatient: (patient: Patient) => set({ patient }),
+        // -----------------------------------Medical Record Data-----------------------------------
+        medicalRecord: undefined,
+        setMedicalRecord: (medicalRecord: MedicalRecord) =>
+          set({ medicalRecord }),
       }),
       {
         name: "user-storage",

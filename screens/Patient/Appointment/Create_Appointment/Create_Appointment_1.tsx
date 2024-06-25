@@ -103,7 +103,6 @@ const Create_Appointment_1: React.FC<Props> = ({
     } else {
       try {
         setIsLoading(true);
-        console.log(date.toLocaleDateString("en-CA").split("T")[0]);
         const result = await refetchSchedule({
           input: {
             id_personnel: personnel.id,

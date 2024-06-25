@@ -37,6 +37,7 @@ const Login: React.FC<Props> = ({ navigation: { navigate } }) => {
     setUserId,
     setAccessToken,
     setFirstName,
+    setSurName,
     setRole,
     setSpeciality,
     setNotifId,
@@ -111,6 +112,7 @@ const Login: React.FC<Props> = ({ navigation: { navigate } }) => {
             const notif = `${data.loginPatient.id}`;
             setNotifId(notif);
             setFirstName(data.loginPatient.first_name);
+            setSurName(data.loginPatient.surname);
             setAccessToken(data.loginPatient.accessToken);
             registerIndieID(
               notif,
@@ -125,6 +127,8 @@ const Login: React.FC<Props> = ({ navigation: { navigate } }) => {
               visibilityTime: 1250, // Duration in milliseconds
               autoHide: true,
             });
+            setRut("");
+            setPassword("");
             setIsLoading(false);
             navigate("Dashboard_Pat");
           }
@@ -144,6 +148,7 @@ const Login: React.FC<Props> = ({ navigation: { navigate } }) => {
             const notif = "-" + `${data.loginPersonnel.id}`;
             setNotifId(notif);
             setFirstName(data.loginPersonnel.first_name);
+            setSurName(data.loginPersonnel.surname);
             setRole(data.loginPersonnel.role);
             setSpeciality(data.loginPersonnel.speciality);
             setAccessToken(data.loginPersonnel.accessToken);
@@ -165,7 +170,6 @@ const Login: React.FC<Props> = ({ navigation: { navigate } }) => {
           }
         }
       } catch (e) {
-        console.log(e);
         setIsSubmitting(false);
         setIsLoading(false);
         Toast.show({
@@ -286,7 +290,7 @@ const Login: React.FC<Props> = ({ navigation: { navigate } }) => {
           >
             <AppTextInput
               placeholder="RUT"
-              keyboardType="default"
+              keyboardType="numeric"
               value={rut}
               onChangeText={setRut}
             />

@@ -84,3 +84,39 @@ export const CREATE_APPOINTMENT = gql`
     }
   }
 `;
+
+export const CONFIRM_APPOINTMENT = gql`
+  mutation ConfirmAppointment($input: ConfirmAppointmentInput!) {
+    confirmAppointment(input: $input) {
+      success
+      message
+    }
+  }
+`;
+
+export const COMPLETE_APPOINTMENT = gql`
+  mutation CompleteAppointment($input: CompleteAppointmentInput!) {
+    completeAppointment(input: $input) {
+      success
+      message
+    }
+  }
+`;
+
+export const CANCEL_APPOINTMENT = gql`
+  mutation CancelAppointment($input: CancelAppointmentInput!) {
+    cancelAppointment(input: $input) {
+      success
+      message
+    }
+  }
+`;
+
+export const RESCHEDULE_APPOINTMENT = gql`
+  mutation RescheduleAppointment($input: RescheduleAppointmentInput!) {
+    rescheduleAppointment(input: $input) {
+      success
+      message
+    }
+  }
+`;

@@ -18,8 +18,17 @@ import My_Appointments_Pat from "../screens/Patient/Appointment/View_Appointment
 import Create_Appointment_1 from "../screens/Patient/Appointment/Create_Appointment/Create_Appointment_1";
 import Create_Appointment_2 from "../screens/Patient/Appointment/Create_Appointment/Create_Appointment_2";
 import Confirm_Details from "../screens/Patient/Appointment/Create_Appointment/Confirm_Details";
+import Medical_Record_Pat_1 from "../screens/Patient/Medical_Record/Medical_Record_Pat_1";
+import Medical_Record_Pat_2 from "../screens/Patient/Medical_Record/Medical_Record_Pat_2";
 import Dashboard_Per from "../screens/Personnel/Dashboard_Per";
 import My_Appointments_Per from "../screens/Personnel/Appointment/My_Appointments_Per";
+import Reschedule_1 from "../screens/Personnel/Appointment/Reschedule/Reschedule_1";
+import Reschedule_2 from "../screens/Personnel/Appointment/Reschedule/Reschedule_2";
+import Confirm_Reschedule from "../screens/Personnel/Appointment/Reschedule/Confirm_Reschedule";
+import Patients_List from "../screens/Personnel/Medical_Record/Patients_List";
+import Patient_Profile from "../screens/Personnel/Medical_Record/Patient_Profile";
+import Medical_Record_Per_1 from "../screens/Personnel/Medical_Record/Medical_Record_Per_1";
+import Medical_Record_Per_2 from "../screens/Personnel/Medical_Record/Medical_Record_Per_2";
 
 const theme = {
   ...DefaultTheme,
@@ -70,10 +79,31 @@ function RootNavigator() {
         component={Create_Appointment_2}
       />
       <Stack.Screen name="Confirm_Details" component={Confirm_Details} />
+      <Stack.Screen
+        name="Medical_Record_Pat_1"
+        component={Medical_Record_Pat_1}
+      />
+      <Stack.Screen
+        name="Medical_Record_Pat_2"
+        component={Medical_Record_Pat_2}
+      />
       <Stack.Screen name="Dashboard_Per" component={Dashboard_Per} />
       <Stack.Screen
         name="My_Appointments_Per"
         component={My_Appointments_Per}
+      />
+      <Stack.Screen name="Reschedule_1" component={Reschedule_1} />
+      <Stack.Screen name="Reschedule_2" component={Reschedule_2} />
+      <Stack.Screen name="Confirm_Reschedule" component={Confirm_Reschedule} />
+      <Stack.Screen name="Patients_List" component={Patients_List} />
+      <Stack.Screen name="Patient_Profile" component={Patient_Profile} />
+      <Stack.Screen
+        name="Medical_Record_Per_1"
+        component={Medical_Record_Per_1}
+      />
+      <Stack.Screen
+        name="Medical_Record_Per_2"
+        component={Medical_Record_Per_2}
       />
     </Stack.Navigator>
   );
