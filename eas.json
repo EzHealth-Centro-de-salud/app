@@ -12,7 +12,7 @@
       "env": {
         "EXPO_PUBLIC_CLOUD_BACKEND_URL": "https://ezhealthbackend.adaptable.app/graphql",
         "EXPO_PUBLIC_LOCAL_BACKEND_URL": "http://192.168.0.2:4000/graphql",
-        "EXPO_PUBLIC_NOTIF_ID": 21776,
+        "EXPO_PUBLIC_NOTIF_ID": "21776",
         "EXPO_PUBLIC_NOTIF_TOKEN": "AHhlLh460oqsL6ad7ao74R"
       }
     },
