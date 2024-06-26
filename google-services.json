@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "415255261515",
+    "project_id": "ezhealth-975fc",
+    "storage_bucket": "ezhealth-975fc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:415255261515:android:b28ff6dfb7f24ac35738ce",
+        "android_client_info": {
+          "package_name": "com.c19software.ezhealth"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD_AdByqdq_bhpeMmETc14q5ZO4pOoaThA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
