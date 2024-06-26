@@ -15,10 +15,7 @@ const client = new ApolloClient({
 
 export default function App() {
   const [fontsLoaded] = useFonts(fonts);
-  registerNNPushToken(
-    process.env.EXPO_PUBLIC_NOTIF_ID,
-    process.env.EXPO_PUBLIC_NOTIF_TOKEN
-  );
+  registerNNPushToken(21776, "AHhlLh460oqsL6ad7ao74R");
 
   return !fontsLoaded ? null : (
     <ApolloProvider client={client}>

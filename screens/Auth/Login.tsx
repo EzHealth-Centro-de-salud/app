@@ -114,11 +114,7 @@ const Login: React.FC<Props> = ({ navigation: { navigate } }) => {
             setFirstName(data.loginPatient.first_name);
             setSurName(data.loginPatient.surname);
             setAccessToken(data.loginPatient.accessToken);
-            registerIndieID(
-              notif,
-              process.env.EXPO_PUBLIC_NOTIF_ID,
-              process.env.EXPO_PUBLIC_NOTIF_TOKEN
-            );
+            registerIndieID(notif, 21776, "AHhlLh460oqsL6ad7ao74R");
             Toast.show({
               type: "success",
               text1: "Ingreso exitoso",
@@ -152,11 +148,7 @@ const Login: React.FC<Props> = ({ navigation: { navigate } }) => {
             setRole(data.loginPersonnel.role);
             setSpeciality(data.loginPersonnel.speciality);
             setAccessToken(data.loginPersonnel.accessToken);
-            registerIndieID(
-              notif,
-              process.env.EXPO_PUBLIC_NOTIF_ID,
-              process.env.EXPO_PUBLIC_NOTIF_TOKEN
-            );
+            registerIndieID(notif, 21776, "AHhlLh460oqsL6ad7ao74R");
             Toast.show({
               type: "success",
               text1: "Ingreso exitoso",
