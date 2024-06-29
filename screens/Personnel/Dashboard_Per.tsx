@@ -128,6 +128,21 @@ const Dashboard_Per: React.FC<Props> = ({ navigation: { navigate } }) => {
               alignItems: "center",
             }}
           >
+            <TouchableOpacity
+              onPress={() => navigate("User_Profile_Per")}
+              style={{
+                position: "absolute",
+                top: Spacing * -10,
+                right: Spacing,
+                zIndex: 1,
+              }}
+            >
+              <FontAwesome
+                name={"user-circle"}
+                size={50}
+                color={Colors.active}
+              />
+            </TouchableOpacity>
             <Text
               style={{
                 fontSize: FontSize.xxLarge,

@@ -19,11 +19,13 @@ import { useFocusEffect, useIsFocused } from "@react-navigation/native";
 import Toast from "react-native-toast-message";
 import GradientWrapper from "../../components/GradientWrapper";
 import { unregisterIndieDevice } from "native-notify";
+import { Icon } from "@rneui/themed";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Dashboard_Pat">;
 
 const Dashboard_Pat: React.FC<Props> = ({ navigation: { navigate } }) => {
-  const { removeLoginData, removeAppData, firstName, notifId } = useUserStore();
+  const { removeLoginData, removeAppData, firstName, notifId, userId } =
+    useUserStore();
   const isFocused = useIsFocused();
 
   const logout = async () => {
@@ -111,6 +113,21 @@ const Dashboard_Pat: React.FC<Props> = ({ navigation: { navigate } }) => {
               alignItems: "center",
             }}
           >
+            <TouchableOpacity
+              onPress={() => navigate("User_Profile_Pat")}
+              style={{
+                position: "absolute",
+                top: Spacing * -10,
+                right: Spacing,
+                zIndex: 1,
+              }}
+            >
+              <FontAwesome
+                name={"user-circle"}
+                size={50}
+                color={Colors.active}
+              />
+            </TouchableOpacity>
             <Text
               style={{
                 fontSize: FontSize.xxLarge,

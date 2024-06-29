@@ -9,6 +9,41 @@ export const UNIQUE_RUT = gql`
   }
 `;
 
+export const GET_PATIENT = gql`
+  query GetPatient($id: Int!) {
+    getPatient(id: $id) {
+      id
+      rut
+      birthdate
+      first_name
+      middle_name
+      surname
+      second_surname
+      sex
+      address
+      region
+      commune
+      email
+      phone
+    }
+  }
+`;
+
+export const GET_PERSONNEL = gql`
+  query GetPersonnel($id: Int!) {
+    getPersonnel(id: $id) {
+      id
+      rut
+      first_name
+      middle_name
+      surname
+      second_surname
+      email
+      speciality
+    }
+  }
+`;
+
 export const GET_PATIENT_APPOINTMENTS = gql`
   query GetPatientAppointments($id: Int!) {
     getPatient(id: $id) {

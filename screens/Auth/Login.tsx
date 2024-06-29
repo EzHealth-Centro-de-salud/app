@@ -20,6 +20,7 @@ import { useUserStore } from "../../stores/useUserStore";
 import Toast from "react-native-toast-message";
 import useButtonTimeout from "../../hooks/useButtonTimeout";
 import { Icon } from "@rneui/themed";
+import FontAwesome from "react-native-vector-icons/FontAwesome5";
 import GradientWrapper from "../../components/GradientWrapper";
 import { LOGIN_PATIENT, LOGIN_PERSONNEL } from "../../graphql/mutations";
 import { useFocusEffect } from "@react-navigation/native";
@@ -114,7 +115,11 @@ const Login: React.FC<Props> = ({ navigation: { navigate } }) => {
             setFirstName(data.loginPatient.first_name);
             setSurName(data.loginPatient.surname);
             setAccessToken(data.loginPatient.accessToken);
-            registerIndieID(notif, 21776, "AHhlLh460oqsL6ad7ao74R");
+            registerIndieID(
+              notif,
+              process.env.EXPO_PUBLIC_NOTIF_ID,
+              process.env.EXPO_PUBLIC_NOTIF_TOKEN
+            );
             Toast.show({
               type: "success",
               text1: "Ingreso exitoso",
@@ -148,7 +153,11 @@ const Login: React.FC<Props> = ({ navigation: { navigate } }) => {
             setRole(data.loginPersonnel.role);
             setSpeciality(data.loginPersonnel.speciality);
             setAccessToken(data.loginPersonnel.accessToken);
-            registerIndieID(notif, 21776, "AHhlLh460oqsL6ad7ao74R");
+            registerIndieID(
+              notif,
+              process.env.EXPO_PUBLIC_NOTIF_ID,
+              process.env.EXPO_PUBLIC_NOTIF_TOKEN
+            );
             Toast.show({
               type: "success",
               text1: "Ingreso exitoso",

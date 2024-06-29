@@ -18,11 +18,13 @@ export type RootStackParamList = {
   ValidateCode_Per: undefined;
   ChangePass_Per: undefined;
   Dashboard_Pat: undefined;
+  User_Profile_Pat: undefined;
   My_Appointments_Pat: undefined;
   Create_Appointment_1: undefined;
   Create_Appointment_2: undefined;
   Confirm_Details: undefined;
   Dashboard_Per: undefined;
+  User_Profile_Per: undefined;
   My_Appointments_Per: undefined;
   Reschedule_1: undefined;
   Reschedule_2: undefined;

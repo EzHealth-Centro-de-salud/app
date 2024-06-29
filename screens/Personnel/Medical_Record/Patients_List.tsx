@@ -55,7 +55,7 @@ const Patients_List: React.FC<Props> = ({ navigation: { navigate } }) => {
           setIsLoading(false);
         })
         .catch((error) => {
-          console.error("Error al cargar las citas:", error);
+          console.error("Error al cargar el listado de pacientes:", error);
           setIsLoading(false);
         });
     }, [refetchPatients])

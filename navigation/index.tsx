@@ -29,6 +29,8 @@ import Patients_List from "../screens/Personnel/Medical_Record/Patients_List";
 import Patient_Profile from "../screens/Personnel/Medical_Record/Patient_Profile";
 import Medical_Record_Per_1 from "../screens/Personnel/Medical_Record/Medical_Record_Per_1";
 import Medical_Record_Per_2 from "../screens/Personnel/Medical_Record/Medical_Record_Per_2";
+import User_Profile_Pat from "../screens/Patient/User_Profile_Pat";
+import User_Profile_Per from "../screens/Personnel/User_Profile_Per";
 
 const theme = {
   ...DefaultTheme,
@@ -66,6 +68,7 @@ function RootNavigator() {
       <Stack.Screen name="ValidateCode_Per" component={ValidateCode_Per} />
       <Stack.Screen name="ChangePass_Per" component={ChangePass_Per} />
       <Stack.Screen name="Dashboard_Pat" component={Dashboard_Pat} />
+      <Stack.Screen name="User_Profile_Pat" component={User_Profile_Pat} />
       <Stack.Screen
         name="My_Appointments_Pat"
         component={My_Appointments_Pat}
@@ -105,6 +108,7 @@ function RootNavigator() {
         name="Medical_Record_Per_2"
         component={Medical_Record_Per_2}
       />
+      <Stack.Screen name="User_Profile_Per" component={User_Profile_Per} />
     </Stack.Navigator>
   );
 }
