@@ -9,7 +9,7 @@ import CustomToast from "./components/CustomToast";
 import registerNNPushToken from "native-notify";
 
 const client = new ApolloClient({
-  uri: process.env.EXPO_PUBLIC_LOCAL_BACKEND_URL,
+  uri: process.env.EXPO_PUBLIC_CLOUD_BACKEND_URL,
   cache: new InMemoryCache(),
 });
 
